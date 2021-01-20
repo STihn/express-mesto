@@ -8,16 +8,21 @@ const getUser = (req, res) => {
 };
 
 const getProfile = (req, res) => {
-  const {userId} = req.params;
-  User.findById(userId)
+  const {id} = req.params;
+  User.findById(id)
+  .orFail(() => {
+    const err = new Error('пользователь не найден')
+    err.statusCode = 404
+    throw err
+  })
     .then(user => {
       if (user) {
         return res.status(200).send(user);
       } else {
-        return res.status(500).send({ message: 'Нет пользователя с таким id' });
+        return res.status(404).send({ message: 'Нет пользователя с таким id' });
       }
     })
-    .catch(err => res.status(500).send(err))
+    .catch(err => res.status(500).send({ message: "ошибка сервера"}))
 };
 
 const createUser = (req,res) => {
@@ -27,6 +32,28 @@ const createUser = (req,res) => {
         .then(user => res.status(200).send(user))
         .catch(err => res.status(500).send(err))
     })
-}
+};
 
-module.exports = {getUser, getProfile, createUser};
+const updateUser = (req, res) => {
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about }, {
+    new: true,
+    upsert: false,
+    runValidators: true,
+  })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => res.status(500).send(err));
+};
+
+const updateUserAvatar = (req, res) => {
+  const { avatar } = req.body;
+  User.findByIdAndUpdate(req.user._id, { avatar }, {
+    new: true,
+    upsert: false,
+    runValidators: true,
+  })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => res.status(500).send(err));
+};
+
+module.exports = { getUser, getProfile, createUser, updateUser, updateUserAvatar };
