@@ -19,12 +19,13 @@ const userShema = new mongoose.Schema(
       required: true,
       validate: {
         validator(v) {
-          return /^(https?:\/\/)[w{3}.]*[\w-\.\/\&]+(#)?$/.test(v);
+          return /^(https?:\/\/)[w{3}.]*[\w-\.\/\&]+(#)?$/.test(v); //eslint-disable-line
         },
-        massage: 'Введите правильную ссылку',
-      }
-    }
-});
+        massageError: 'Введите правильную ссылку',
+      },
+    },
+  },
+);
 
 const userModal = mongoose.model('user', userShema);
 

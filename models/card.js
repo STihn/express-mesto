@@ -13,11 +13,11 @@ const cardShema = new mongoose.Schema(
       required: true,
       validate: {
         validator(v) {
-          return /^(https?:\/\/)[w{3}.]*[\w-\.\/\&]+(#)?$/.test(v);
+          return /^(https?:\/\/)[w{3}.]*[\w-\.\/\&]+(#)?$/.test(v);//eslint-disable-line
         },
 
-        massage: 'Введите правильную ссылку',
-      }
+        massageError: 'Введите правильную ссылку',
+      },
     },
     owner: {
       type: mongoose.Types.ObjectId,
@@ -31,9 +31,10 @@ const cardShema = new mongoose.Schema(
     }],
     createdAt: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
     },
-});
+  },
+);
 
 const cardModal = mongoose.model('card', cardShema);
 
