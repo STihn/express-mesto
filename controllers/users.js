@@ -31,7 +31,7 @@ const createUser = (req, res) => User.countDocuments()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({ massage: err.errors.avatar.properties.massageError });
+        return res.status(400).send({ massage: 'Введите правильную ссылку'});
       }
       return res.status(500).send({ massage: 'ошибка не сервере' });
     }));

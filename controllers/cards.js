@@ -12,7 +12,7 @@ const createCard = (req, res) => {
     .then((cards) => res.status(200).send(cards))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({ massage: err.errors.link.properties.massageError });
+        return res.status(400).send({ massage: 'Введите правильную ссылку' });
       }
       return res.status(500).send({ massage: 'ошибка не сервере' });
     });
